@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>相似图形匹配测试</title>
+    <style>
+        .btn{cursor: pointer;background: #1482FF;border: 1px solid #ccc;border-radius: 3px;width: 120px;height: 30px;line-height: 30px;}
+        .information{margin: 100px auto 0;}
+        .information table{width: 300px;margin: 0 auto;}
+        .information table td{border: 1px solid #ccc;}
+        .information input{border: 1px solid #ccc;border-radius: 3px;width: 100%;text-indent: 5px;height: 28px;}
+        .foot{text-align: center;margin-top: 30px}
+        h5{margin: 10px 0 0;}
+    </style>
+</head>
+<body>
+<h3 style="text-align: center;">请填写以下基本信息（该信息仅为下一步实验需要，方便与你联系，信息将严格保密，请放心填写）</h3>
+<div class="information">
+    <div style="text-align: center;">
+        <table cellpadding="5" cellspacing="0">
+            <tbody>
+            <tr>
+                <td>平均答题时间</td>
+                <td class="time"></td>
+            </tr>
+            <tr>
+                <td>总错误数</td>
+                <td class="error"></td>
+            </tr>
+            <tr>
+                <td>姓名：</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>年龄：</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>短号：</td>
+                <td><input type="text"></td>
+            </tr>
+            <tr>
+                <td>邮箱：</td>
+                <td><input type="email"></td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        <button class="btn reset" onclick="location.href = 'index.html'">重新答题</button>
+    </div>
+</div>
+<div class="foot">
+    <h4>请将此页面截图发到我的邮箱<a href="mailto:921350823@qq.com">921350823@qq.com</a>。</h4>
+    <h4>感谢你的配合。</h4>
+</div>
+<script src="jquery1.8.1/jquery-1.8.1.min.js"></script>
+<script>
+    var data = JSON.parse(sessionStorage.data);
+    $(".time").text(Math.ceil(data.timeCount / 20) + "s");
+    $(".error").text(data.count);
+</script>
+</body>
+</html>
