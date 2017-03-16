@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <title>相似图形匹配测试</title>
+    <style>
+	body{text-align:center} 
+        .img{cursor: pointer;}
+        label{margin-right: 10px;}
+        .btn{cursor: pointer;background: #1482FF;border: 1px solid #ccc;border-radius: 3px;width: 120px;height: 30px;line-height: 30px;}
+        .con{display: inline-block;}
+        .error, .correct{display: none;color: red;font-weight: bold;}
+        .submit{display: none;}
+        .foot{text-align: center;}
+	.div-inline{ display:inline} 
+    </style>
+</head>
+<body>
+<div class="content">
+<table id="__01" width="760" height="681" border="0" cellpadding="0" cellspacing="0" align="center" >
+	<tr>
+		<td colspan="3">
+			<div width="748" height="22" alt=""></div></td>
+	</tr>
+	<tr>
+		<td>
+			<div class="header" width="250" height="150" alt="" align="left"  word-wrap="break-word"><br>规则：请从以下8个图形中，找出与标准图形一样的图形。<p>如果选择错误,请继续选择，直到提示选择正确！<br><br>判断：<span class="error">选择错误</span><span class="correct">选择正确</span></div></td>
+		<td>
+			<div class="header"><img src="image/img/1/0.jpg" width="180" height="185" alt="" ></div></td>
+		<td>
+			<span  width="282" height="185" alt=""><div>第<span class="number">1.</span>题</div></td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<div style="display: inline-block;" width="748" height="452">
+        <div class="answer" style="display: inline-block;"></div>
+        <div class="foot">
+
+            <button class="btn submit">提交</button>
+            <button class="btn next" disabled>下一题</button>
+
+        </div>
+    </div></td>
+	</tr>
+</table>
+</div>
+
+<script src="jquery1.8.1/jquery-1.8.1.min.js"></script>
+<script>
+    $(".header img").click(function(){
+        $(this).attr("src", "image/img/1/0.jpg");
+    });
+    // 当前题数
+    var nowTitle = 0;
+    // 每题第一次选择的时间
+    var chooseTime = 1;
+    // 每题选择次数
+    var checkNumber = 0;
+    // 每题的错误数
+    var errNumber = 0;
+    var arr = {count: 0, timeCount: 0, data: []};
+    var tt;
+    var dataArr = [];
+    // 答案
+    var correctAnswer = [8, 8, 1, 2, 5, 3, 1, 5, 4, 1, 4, 5, 4, 4, 5, 1, 2, 7, 5, 1];
+    correctAnswer.forEach(function(data, index){
+        dataArr.push({id: index + 1, imgUrl: (index + 1) + "/0.jpg", val: data, list: []});
+        for(var j = 0; j < 8; j++){
+            dataArr[index].list.push({imgUrl: (index + 1) + "/" + (j + 1) + ".jpg", val: (j + 1)});
+        }
+    });
+
+    function setProblem(data){
+        $(".answer").empty();
+        $(".error, .correct").hide();
+        $(".next").attr("disabled", true);
+        $(".number").text(data.id);
+        $(".header img").attr("src", "image/img/" + data.imgUrl);
+        for(var i = 0; i < dataArr[nowTitle].list.length; i++){
+            $(".answer").append("<div class='con'><label for='" + i + "'>" +
+                    "<img class='img' src='image/img/" + data["list"][i]["imgUrl"] + "'>" +
+                    "</label>" +
+                    "<div>" +
+                    "<input id='" + i + "' type='radio' name='pic' value='" + data["list"][i]["val"] + "'>" + option(i) + 
+                    "</div>" +
+                    "</div>" + (i % 4 == 3 ? "<br>" : "")
+            );
+        }
+
+        tt = setInterval(function(){
+            chooseTime++;
+        }, 1000)
+    }
+
+    setProblem(dataArr[nowTitle]);
+
+    $("[type='radio']").live("change", function(){
+        checkNumber++;
+        $(".error, .correct").hide();
+        if(dataArr[nowTitle]){
+            if(checkNumber == 1){
+                clearInterval(tt);
+            }
+            if(dataArr[nowTitle].val == $("input:checked").val()){
+                nowTitle++;
+                arr.count += errNumber;
+                arr.timeCount += chooseTime;
+                arr.data.push({number: nowTitle + 1, firstTime: chooseTime, errNumber: errNumber});
+                $(".correct").show();
+                if(nowTitle >= 20){
+                    $("[type='radio']").attr("disabled", true);
+                    $(".next").hide();
+                    $(".submit").show();
+                }else {
+                    $("[type='radio']").attr("disabled", true);
+                    $(".next").attr("disabled", false);
+                }
+                errNumber = 0;
+                chooseTime = 1;
+                checkNumber = 0;
+            }else{
+                errNumber++;
+                $(".error").show();
+            }
+        }
+    });
+
+    $(".next").click(function(){
+        setProblem(dataArr[nowTitle]);
+    });
+
+    $(".submit").click(function(){
+        sessionStorage.data = JSON.stringify(arr);
+        window.location.href = "index3.html";
+    });
+
+    // 选项
+    function option(index){
+        switch (index){
+            case 0:
+                return "A.";
+            case 1:
+                return "B.";
+            case 2:
+                return "C.";
+            case 3:
+                return "D.";
+            case 4:
+                return "E.";
+            case 5:
+                return "F.";
+            case 6:
+                return "G.";
+            default:
+                return "H.";
+        }
+    }
+    // 计时器
+
+
+
+</script>
+</body>
+</html>
